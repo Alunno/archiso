@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#################################
-######### CONFIGURATION #########
-##### (Later in Config File) ####
-#################################
+##################################################
+################## CONFIGURAÇÃO ##################
+##### (Mais tarde no arquivo de configuração) ####
+##################################################
 RELEASE_VERSION="0.2.0 Private Alpha"
 
 LOADKEY=br-abnt2
@@ -18,16 +18,16 @@ TIMEZONE=/usr/share/zoneinfo/America/Sao_Paulo
 
 logfile="archinstall.log"
 
-#################################
-##### Function Definitions ######
-#################################
+##################################
+##### Definição das funções ######
+##################################
 
-#########################
-##### Script Part 1 #####
-#########################
+##########################
+##### Script Parte 1 #####
+##########################
 
 func_prologue() {
-	# Are You Reads?
+	# Você esta pronto?
 
 	read -p "Olá, seja bem vindo a instalação do arch-linux? (Pressione Enter) " ready
 	echo "Perfeito!"
@@ -45,14 +45,14 @@ func_loadkeys() {
 }
 
 func_connect_to_lan() {
-	echo "Connection To LAN TODO!"
+	echo "Conexão com a LAN!"
 }
 
 func_connect_to_wifi() {
 	# Ajuda para conectar ao WIFI Hotspot
 
 	#echo ""
-	#echo -n "Scanneando dispositivos de rede..."
+	#echo -n "Scaneando dispositivos de rede..."
 	#iwctl
 	#listOfDevices=device list	
 	#echo " pronto"
@@ -85,8 +85,8 @@ func_internet_connection() {
 		
 	elif [ $connectWifi == "1" ]
 	then
-		# Connect to WIFI
-		echo "Connecting to WIFI..."
+		# Conectar por WIFI
+		echo "Conectando ao WIFI..."
 		func_connect_to_wifi
 	else
 		func_connect_to_lan
@@ -159,13 +159,13 @@ func_partitioning() {
     #		case $yn in
 	#		[Yy]* ) separatehome=1; break;;
 	#		[Nn]* ) separatehome=0; break;;
-	#		* ) echo "Please answer yes or no.";;
+	#		* ) echo "Por favor responda yes ou no.";;
     #		esac
 	#done
 	
 	#if [ $separatehome == 1 ]
 	#then
-	#	# Set Root Device via input
+	#	# Defina o dispositivo rais na entrada
 	#	lsblk
 	#	read -p "Selecione o dispositivo para o diretório home: " separatehomedevice
 	#fi
@@ -270,10 +270,10 @@ func_config_archlinux() {
 	echo LANG=$LANG > /mnt/etc/locale.conf  # Idioma
 	
 	# nano /etc/locale.gen
-	# -> uncomments this:
-	#de_DE.UTF-8 UTF-8
-	#de_DE ISO-8859-1
-	#de_DE@euro ISO-8859-15
+	# -> descomente isso:
+	#pt_BR.UTF-8 UTF-8
+	#pt_BR ISO-8859-1
+	#pt_BR@euro ISO-8859-15
 	#en_US.UTF-8
 	for lang in ${LOCALE[@]}
 	do
@@ -293,14 +293,14 @@ func_config_archlinux() {
 	
 	cat /mnt/etc/fstab   # verificando
 
-	#read -p "(Press Enter to Continue) " ready
+	#read -p "(Precione enter para continuar) " pronto.
 	
 	#while true; do
-    #		read -p "Do you wish to edit the fstab file (y/n)? " yn
+    #		read -p "Você deseja editar o arquivo fstab (y/n)? " yn
 	#    	case $yn in
 	#		[Yy]* ) nano /mnt/etc/fstab; break;;
 	#		[Nn]* ) break;;
-	#		* ) echo "Please answer yes or no.";;
+	#		* ) echo "Por favor responda yes ou no.";;
 	#    	esac
 	#done
 	echo "Editar arquivo hosts "
@@ -326,7 +326,7 @@ func_script_part1() {
 	### verificar conexão com a internet ###
 	func_check_internet_connection
 
-	### Hinweise - Note ###
+	### Notas ###
 	func_release_notes
 
 	### Atualizando banco de dados ###
@@ -350,9 +350,9 @@ func_script_part1() {
 	### Copie o script para o diretório raiz na instalação do ArchLinux
 	cp -v $0 /mnt/install-archlinux.sh
 	echo "${deviceRoot}" >> /mnt/device.info
-	# TODO -> Copie outros arquivos importantes/urgentes
+	# Pendência -> Copie outros arquivos importantes/urgentes
 	
-	### ALterar diretório root (Arch-ChRoot) ### TODO
+	### ALterar diretório root (Arch-ChRoot) ### Pendência
 	echo "Mudando para ArchLinux Root e continuando o script (em 3 Segundos)"
 	sleep 3
 	arch-chroot /mnt ./install-archlinux.sh continue
@@ -392,9 +392,9 @@ func_post_arch_chroot_config() {
 	echo "Gerando $NUMBER_OF_MIRRORS Entrada de lista de espelho: "
 	reflector --verbose --country $LOCAL_MIRROR_COUNTRY -l $NUMBER_OF_MIRRORS -p https --sort rate --save /etc/pacman.d/mirrorlist
 
-	# Manipular MKINICPIO - TODO - Kritische Stelle bei einem ISO Update, im AUGE Behalten beim Testing
+	# Manipular MKINICPIO - Pendênte - Ponto crítico durante uma atualização ISO, fique de OLHO ao testar
 	echo "Editar Mkinitcpio "
-	match="bloquear sistema de arwuivos"
+	match="bloquear sistema de arquivos"
 	insert="bloquear sistema de arquivos lvm2 encriptado"
 	file="/etc/mkinitcpio.conf"
 	sed -i "s/$match/$insert/" $file
@@ -416,9 +416,9 @@ func_post_arch_chroot_config() {
 	
 	#echo " feito"
 
-	# TODO O mesmo acontece com outras seções padrão do grub
+	# (Pendência) O mesmo acontece com outras seções padrão do grub
 	
-	grub-mkconfig -o /boot/grub/grub.cfg  # Ferando arquivo de configuração do grub
+	grub-mkconfig -o /boot/grub/grub.cfg  # Gerando arquivo de configuração do grub
 	
 	echo ""
 	echo "SISTEMA BASE instalado e CONFIGURAÇÃO BASE concluida"
@@ -426,7 +426,7 @@ func_post_arch_chroot_config() {
 }
 
 func_setup_arch_linux_root() {
-	echo "func_setup_arch_linux_root TODO" # TODO
+	echo "func_setup_arch_linux_root (Pendência)" # Pendência
 }
 
 func_leave_arch_chroot() {
@@ -459,7 +459,7 @@ func_script_part2() {
 #set -ex
 
 #########################
-##### Main Methode ######
+##### Metodo Main ######
 #########################
 script_part="$1"
 
@@ -470,15 +470,11 @@ else
 	func_script_part1
 fi
 	
-
-
-
-
 install_packer() {
     mkdir /foo
     cd /foo
-    curl https://aur.archlinux.org/packages/pa/packer/packer.tar.gz | tar xzf -
-    cd packer
+    curl https://aur.archlinux.org/cgit/aur.git/snapshot/yay.tar.gz | tar xzf -
+    cd yay
     makepkg -si --noconfirm --asroot
 
     cd /
